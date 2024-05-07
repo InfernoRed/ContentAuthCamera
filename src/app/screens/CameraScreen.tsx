@@ -1,6 +1,6 @@
-import { StyleSheet, Text, View } from "react-native";
-import React from "react";
-import { Stack } from "expo-router";
+import { StyleSheet, Text, View } from 'react-native';
+import React from 'react';
+import { Stack } from 'expo-router';
 
 const CameraScreen = () => {
   return (
@@ -8,7 +8,7 @@ const CameraScreen = () => {
       <Stack.Screen
         options={{
           headerShown: true,
-          title: "Camera",
+          title: 'Camera',
         }}
       />
       <Text style={styles.title}>Camera Screen</Text>
@@ -21,11 +21,11 @@ export default CameraScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   title: {
     fontSize: 20,
-    fontWeight: "bold",
+    fontWeight: 'bold',
   },
 });
