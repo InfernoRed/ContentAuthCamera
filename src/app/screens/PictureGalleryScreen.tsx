@@ -1,6 +1,6 @@
-import { StyleSheet, Text, View } from "react-native";
-import React from "react";
-import { Stack } from "expo-router";
+import { StyleSheet, Text, View } from 'react-native';
+import React from 'react';
+import { Stack } from 'expo-router';
 
 const PictureGalleryScreen = () => {
   return (
@@ -8,7 +8,7 @@ const PictureGalleryScreen = () => {
       <Stack.Screen
         options={{
           headerShown: true,
-          title: "Picture Gallery",
+          title: 'Picture Gallery',
         }}
       />
       <Text style={styles.title}>Picture Gallery Screen</Text>
@@ -21,11 +21,11 @@ export default PictureGalleryScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   title: {
     fontSize: 20,
-    fontWeight: "bold",
+    fontWeight: 'bold',
   },
 });
