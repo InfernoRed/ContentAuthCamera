@@ -1,10 +1,17 @@
 import { StyleSheet, Text, View } from "react-native";
 import React from "react";
+import { Stack } from "expo-router";
 
 const PictureGalleryScreen = () => {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>PictureGalleryScreen</Text>
+      <Stack.Screen
+        options={{
+          headerShown: true,
+          title: "Picture Gallery",
+        }}
+      />
+      <Text style={styles.title}>Picture Gallery Screen</Text>
     </View>
   );
 };
