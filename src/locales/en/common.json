@@ -7,5 +7,6 @@
   "cameraPermissionMessage": "We need your permission to show the camera",
   "grantPermission": "grant permission",
   "retake": "Retake",
-  "sign": "Sign"
+  "sign": "Sign",
+  "imagePickerButtonLabel": "Pick an image from storage"
 }
