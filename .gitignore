@@ -43,3 +43,4 @@ expo-env.d.ts
 # Native App Files
 android/
 ios/
+.vscode
