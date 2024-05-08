@@ -39,3 +39,8 @@ yarn-error.*
 
 expo-env.d.ts
 # @end expo-cli
+
+# Native App Files
+android/
+ios/
+.vscode
