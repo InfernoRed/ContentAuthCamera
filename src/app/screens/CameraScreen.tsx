@@ -1,6 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import React, { FC, useRef, useEffect } from 'react';
 import { CameraType, CameraView, useCameraPermissions, CameraCapturedPicture } from 'expo-camera';
+import * as MediaLibrary from 'expo-media-library';
 import { useState } from 'react';
 import {
   ActivityIndicator,
@@ -51,8 +52,11 @@ const CameraScreen: FC = () => {
 
   async function onTakePicturePressed() {
     const photo = await cameraRef.current?.takePictureAsync();
-    setPhoto(photo);
-    console.log(photo);
+    if (photo) {
+      setPhoto(photo);
+      await MediaLibrary.createAssetAsync(photo.uri);
+      console.log(photo);
+    }
   }
   function onRetakeButtonPressed() {
     setPhoto(undefined);
