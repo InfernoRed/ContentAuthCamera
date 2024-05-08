@@ -7,5 +7,6 @@
   "cameraPermissionMessage": "Necesitamos tu permiso para enseñar la camara",
   "grantPermission": "Da Permiso",
   "retake": "Volver a tomar",
-  "sign": "Firmar"
+  "sign": "Firmar",
+  "imagePickerButtonLabel": "Escoge una imagen en la memoria."
 }
