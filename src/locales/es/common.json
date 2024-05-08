@@ -3,5 +3,9 @@
   "pictureGallery": "Galería de imágenes",
   "cameraScreen": "Screen de Camara",
   "camera": "Camera",
-  "pictureGalleryScreen": "Screen de Galería de imágenes"
+  "pictureGalleryScreen": "Screen de Galería de imágenes",
+  "cameraPermissionMessage": "Necesitamos tu permiso para enseñar la camara",
+  "grantPermission": "Da Permiso",
+  "retake": "Volver a tomar",
+  "sign": "Firmar"
 }

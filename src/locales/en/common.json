@@ -3,5 +3,9 @@
   "pictureGallery": "Picture Gallery",
   "cameraScreen": "Camera Screen",
   "camera": "Camera",
-  "pictureGalleryScreen": "Picture Gallery Screen"
+  "pictureGalleryScreen": "Picture Gallery Screen",
+  "cameraPermissionMessage": "We need your permission to show the camera",
+  "grantPermission": "grant permission",
+  "retake": "Retake",
+  "sign": "Sign"
 }
