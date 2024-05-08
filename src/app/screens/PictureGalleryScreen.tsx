@@ -1,17 +1,20 @@
 import { StyleSheet, Text, View } from 'react-native';
 import React from 'react';
 import { Stack } from 'expo-router';
+import { useTranslation } from 'react-i18next';
+import { FC } from 'react';
 
-const PictureGalleryScreen = () => {
+const PictureGalleryScreen: FC = () => {
+  const { t } = useTranslation();
   return (
     <View style={styles.container}>
       <Stack.Screen
         options={{
           headerShown: true,
-          title: 'Picture Gallery',
+          title: t('pictureGallery'),
         }}
       />
-      <Text style={styles.title}>Picture Gallery Screen</Text>
+      <Text style={styles.title}>{t('pictureGalleryScreen')}</Text>
     </View>
   );
 };

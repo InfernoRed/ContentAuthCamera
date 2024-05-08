@@ -1,23 +1,27 @@
 import { StyleSheet, Text, View, ImageBackground, Pressable } from 'react-native';
 import React from 'react';
 import { Link } from 'expo-router';
+import { useTranslation } from 'react-i18next';
+import { FC } from 'react';
 
 const Separator = () => <View style={styles.separator} />;
 
-const HomeScreen = () => {
+const HomeScreen: FC = () => {
+  const { t } = useTranslation();
+
   return (
     <View style={styles.container}>
       <ImageBackground source={require('@/src/assets/images/background.png')} style={styles.image}>
         <Link href="/screens/CameraScreen" asChild>
           <Pressable style={styles.button} onPress={() => {}}>
-            <Text style={styles.text}>Camera Roll</Text>
+            <Text style={styles.text}>{t('cameraRoll')}</Text>
           </Pressable>
         </Link>
 
         <Separator />
         <Link href="/screens/PictureGalleryScreen" asChild>
           <Pressable style={styles.button} onPress={() => {}}>
-            <Text style={styles.text}>Picture Gallery</Text>
+            <Text style={styles.text}>{t('pictureGallery')}</Text>
           </Pressable>
         </Link>
       </ImageBackground>
