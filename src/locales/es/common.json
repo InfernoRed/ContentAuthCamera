@@ -8,5 +8,10 @@
   "grantPermission": "Da Permiso",
   "retake": "Volver a tomar",
   "sign": "Firmar",
-  "imagePickerButtonLabel": "Escoge una imagen en la memoria."
+  "imagePickerButtonLabel": "Escoge una imagen en la memoria.",
+  "apiErrorTitle": "Error de API",
+  "APIErrorDescription": "La imagen no se pudo verificar. Por favor trate denuevo.",
+  "ok": "Confirmar",
+  "SuccessUploadAlertMessage": "La imagen fue verificada y enviada a la nube.",
+  "loadingComponentLabel": "Verificando la image."
 }
