@@ -16,13 +16,23 @@ import {
 import { Stack } from 'expo-router';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { STYLES } from '@/src/constants';
+import useC2PAPost from '@/src/hooks/AxiosHooks/useC2PAPost';
+import crIcon from '@/src/assets/images/cr.png';
+import LoadingComponent from '@/src/app/components/LoadingComponent';
+
+enum CameraFacing {
+  BACK = 'back',
+  FRONT = 'front',
+}
 
 const CameraScreen: FC = () => {
   const { t } = useTranslation();
-  const [facing, setFacing] = useState<CameraType>('back');
+  const [facing, setFacing] = useState<CameraType>(CameraFacing.BACK);
   const [permission, requestPermission] = useCameraPermissions();
   const [photo, setPhoto] = useState<CameraCapturedPicture>();
   const cameraRef = useRef<CameraView>(null);
+
+  const { response, apiError, loading, postData } = useC2PAPost();
 
   //Effect to ask the user for Camera Permission
   useEffect(() => {
@@ -46,25 +56,35 @@ const CameraScreen: FC = () => {
     );
   }
 
-  function toggleCameraFacing() {
-    setFacing((current) => (current === 'back' ? 'front' : 'back'));
-  }
+  const toggleCameraFacing = () => {
+    setFacing((current) =>
+      current === CameraFacing.BACK ? CameraFacing.FRONT : CameraFacing.BACK,
+    );
+  };
 
   async function onTakePicturePressed() {
-    const photo = await cameraRef.current?.takePictureAsync();
+    const photo = await cameraRef.current?.takePictureAsync({ base64: true });
     if (photo) {
       setPhoto(photo);
-      await MediaLibrary.createAssetAsync(photo.uri);
-      console.log(photo);
+      console.log(photo.uri);
     }
   }
+
   function onRetakeButtonPressed() {
     setPhoto(undefined);
   }
 
-  function onSignedButtonPressed() {
-    Alert.alert('TODO: Implementation with C2PA signing');
+  async function onSignedButtonPressed() {
+    if (photo?.base64) {
+      await MediaLibrary.createAssetAsync(photo.uri);
+      postData(photo.base64);
+    }
   }
+
+  const apiErrorAlert = () =>
+    Alert.alert(t('apiErrorTitle'), t('APIErrorDescription'), [
+      { text: 'OK', onPress: () => onRetakeButtonPressed() },
+    ]);
 
   return (
     <View style={[STYLES.container, { alignItems: 'center' }]}>
@@ -74,28 +94,51 @@ const CameraScreen: FC = () => {
           title: t('camera'),
         }}
       />
-      {photo ? (
+      {loading ? (
         <>
-          <Image source={{ uri: photo.uri }} style={StyleSheet.absoluteFill} />
-          <View style={STYLES.PhotoButtonContainer}>
-            <Pressable style={STYLES.PhotoButtons} onPress={onRetakeButtonPressed}>
-              <Text style={STYLES.photoText}>{t('retake')}</Text>
-            </Pressable>
-            <Pressable style={STYLES.PhotoButtons} onPress={onSignedButtonPressed}>
-              <Text style={STYLES.photoText}>{t('sign')}</Text>
-            </Pressable>
-          </View>
+          <LoadingComponent />
         </>
       ) : (
         <>
-          <CameraView style={StyleSheet.absoluteFill} facing={facing} ref={cameraRef} />
-          <Ionicons
-            name="camera-reverse"
-            size={40}
-            onPress={toggleCameraFacing}
-            style={STYLES.cameraToggle}
-          />
-          <Pressable onPress={onTakePicturePressed} style={STYLES.cameraButton} />
+          {photo ? (
+            <>
+              <Image source={{ uri: photo.uri }} style={StyleSheet.absoluteFill} />
+              {response ? (
+                <>
+                  {Alert.alert(t('SuccessUploadAlertMessage'))}
+                  <Image source={crIcon} style={STYLES.cameraToggle} />
+                </>
+              ) : (
+                <>
+                  {apiError ? (
+                    <>{apiErrorAlert()}</>
+                  ) : (
+                    <>
+                      <View style={STYLES.PhotoButtonContainer}>
+                        <Pressable style={STYLES.PhotoButtons} onPress={onRetakeButtonPressed}>
+                          <Text style={STYLES.photoText}>{t('retake')}</Text>
+                        </Pressable>
+                        <Pressable style={STYLES.PhotoButtons} onPress={onSignedButtonPressed}>
+                          <Text style={STYLES.photoText}>{t('sign')}</Text>
+                        </Pressable>
+                      </View>
+                    </>
+                  )}
+                </>
+              )}
+            </>
+          ) : (
+            <>
+              <CameraView style={StyleSheet.absoluteFill} facing={facing} ref={cameraRef} />
+              <Ionicons
+                name="camera-reverse"
+                size={40}
+                onPress={toggleCameraFacing}
+                style={STYLES.cameraToggle}
+              />
+              <Pressable onPress={onTakePicturePressed} style={STYLES.cameraButton} />
+            </>
+          )}
         </>
       )}
     </View>

@@ -8,5 +8,10 @@
   "grantPermission": "grant permission",
   "retake": "Retake",
   "sign": "Sign",
-  "imagePickerButtonLabel": "Pick an image from storage"
+  "imagePickerButtonLabel": "Pick an image from storage",
+  "apiErrorTitle": "API error",
+  "APIErrorDescription": "The photo was not signed. Please try again.",
+  "ok": "OK",
+  "SuccessUploadAlertMessage": "Your image was successfully signed and sent to the Cloud.",
+  "loadingComponentLabel": "Verifying the image."
 }
