@@ -13,5 +13,6 @@
   "APIErrorDescription": "La imagen no se pudo verificar. Por favor trate denuevo.",
   "ok": "Confirmar",
   "SuccessUploadAlertMessage": "La imagen fue verificada y enviada a la nube.",
-  "loadingComponentLabel": "Verificando la image."
+  "loadingComponentLabel": "Verificando la image.",
+  "UnsupportedFormatMessage": "Por favor seleccione un formato válido."
 }

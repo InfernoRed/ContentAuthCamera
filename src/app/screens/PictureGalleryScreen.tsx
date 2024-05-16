@@ -11,6 +11,12 @@ import crIcon from '@/src/assets/images/cr.png';
 import { ImagePickerAsset } from 'expo-image-picker';
 import LoadingComponent from '@/src/app/components/LoadingComponent';
 
+enum ImageTypes {
+  JPG = 'jpg',
+  JPEG = 'jpeg',
+  PNG = 'png',
+}
+
 const PictureGalleryScreen: FC = () => {
   const { t } = useTranslation();
   const { response, apiError, loading, postData } = useC2PAPost();
@@ -22,11 +28,15 @@ const PictureGalleryScreen: FC = () => {
       quality: 1,
       base64: true,
     });
+    if (result.canceled) return;
 
-    console.log(result);
+    console.log(result.assets[0].uri);
 
-    if (!result.canceled) {
+    if (checkFormat(result.assets[0].uri)) {
       setSelectedImage(result.assets[0]);
+    } else {
+      Alert.alert(t('UnsupportedFormatMessage'));
+      return;
     }
   };
 
@@ -46,6 +56,13 @@ const PictureGalleryScreen: FC = () => {
     Alert.alert(t('apiErrorTitle'), t('APIErrorDescription'), [
       { text: t('ok'), onPress: () => onRetakeButtonPressed() },
     ]);
+
+  const checkFormat = (uri: string): boolean => {
+    const parts = uri.split('.');
+    const extension = parts.length > 1 ? parts[parts.length - 1].toLowerCase() : '';
+
+    return Object.values(ImageTypes).includes(extension as ImageTypes);
+  };
 
   const BottomButtonsComponent = () => {
     return (
