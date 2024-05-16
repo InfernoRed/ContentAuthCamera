@@ -13,5 +13,6 @@
   "APIErrorDescription": "The photo was not signed. Please try again.",
   "ok": "OK",
   "SuccessUploadAlertMessage": "Your image was successfully signed and sent to the Cloud.",
-  "loadingComponentLabel": "Verifying the image."
+  "loadingComponentLabel": "Verifying the image.",
+  "UnsupportedFormatMessage": "Please select a valid format."
 }
