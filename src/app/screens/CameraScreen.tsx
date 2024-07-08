@@ -19,6 +19,8 @@ import { STYLES } from '@/src/constants';
 import useC2PAPost from '@/src/hooks/AxiosHooks/useC2PAPost';
 import crIcon from '@/src/assets/images/cr.png';
 import LoadingComponent from '@/src/app/components/LoadingComponent';
+import { UserData } from '@/src/types/types';
+import InputManifestModal from '@/src/app/components/InputManifestModal';
 
 enum CameraFacing {
   BACK = 'back',
@@ -31,13 +33,13 @@ const CameraScreen: FC = () => {
   const [permission, requestPermission] = useCameraPermissions();
   const [photo, setPhoto] = useState<CameraCapturedPicture>();
   const cameraRef = useRef<CameraView>(null);
-
+  const [isInputModalVisible, setInputModalVisible] = useState<boolean>(false);
   const { response, apiError, loading, postData } = useC2PAPost();
 
   //Effect to ask the user for Camera Permission
   useEffect(() => {
     if (!permission) {
-      requestPermission();
+      requestPermission().then(() => {});
     }
   }, [permission, requestPermission]);
 
@@ -74,12 +76,23 @@ const CameraScreen: FC = () => {
     setPhoto(undefined);
   }
 
-  async function onSignedButtonPressed() {
+  async function callC2PAManifest(data: UserData) {
     if (photo?.base64) {
       await MediaLibrary.createAssetAsync(photo.uri);
       postData(photo.base64);
     }
   }
+
+  const handleInputSave = (data: UserData) => {
+    console.log('User Information:', data);
+    if (data.fullName === '' || data.fullName === undefined) {
+      Alert.alert('Invalid Input Data', 'Please at least provide the Full Name.', [
+        { text: 'OK', onPress: () => setInputModalVisible(true), style: 'cancel' },
+      ]);
+      return;
+    }
+    callC2PAManifest(data);
+  };
 
   const apiErrorAlert = () =>
     Alert.alert(t('apiErrorTitle'), t('APIErrorDescription'), [
@@ -114,13 +127,28 @@ const CameraScreen: FC = () => {
                     <>{apiErrorAlert()}</>
                   ) : (
                     <>
+                      <InputManifestModal
+                        visible={isInputModalVisible}
+                        onClose={() => {
+                          setInputModalVisible(false);
+                        }}
+                        onSave={handleInputSave}
+                      />
                       <View style={STYLES.PhotoButtonContainer}>
-                        <Pressable style={STYLES.PhotoButtons} onPress={onRetakeButtonPressed}>
-                          <Text style={STYLES.photoText}>{t('retake')}</Text>
-                        </Pressable>
-                        <Pressable style={STYLES.PhotoButtons} onPress={onSignedButtonPressed}>
-                          <Text style={STYLES.photoText}>{t('sign')}</Text>
-                        </Pressable>
+                        {isInputModalVisible ? null : (
+                          <>
+                            <Pressable style={STYLES.PhotoButtons} onPress={onRetakeButtonPressed}>
+                              <Text style={STYLES.photoText}>{t('retake')}</Text>
+                            </Pressable>
+                            <Pressable
+                              style={STYLES.PhotoButtons}
+                              onPress={() => {
+                                setInputModalVisible(true);
+                              }}>
+                              <Text style={STYLES.photoText}>{t('sign')}</Text>
+                            </Pressable>
+                          </>
+                        )}
                       </View>
                     </>
                   )}
