@@ -1,5 +1,6 @@
 import axios, { AxiosError, AxiosResponse } from 'axios';
 import { useState } from 'react';
+import { UserData } from '@/src/types/types';
 
 const baseURL = 'https://irt-image-upload.azurewebsites.net/v1/image/upload';
 const apikey = process.env.EXPO_PUBLIC_C2PA_API_KEY;
@@ -16,7 +17,7 @@ const useC2PAPost = () => {
   const [apiError, setApiError] = useState<Error | AxiosError>();
   const [loading, setLoading] = useState(false);
 
-  const postData = async (base64Image: string) => {
+  const postData = async (base64Image: string, manifestData: UserData | undefined) => {
     setLoading(true);
 
     if (!base64Image) {

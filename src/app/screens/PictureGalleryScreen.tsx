@@ -42,9 +42,9 @@ const PictureGalleryScreen: FC = () => {
     }
   };
 
-  function callC2PAManifest() {
+  function callC2PAManifest(data: UserData) {
     if (selectedImage?.base64) {
-      postData(selectedImage.base64);
+      postData(selectedImage.base64, data);
     } else {
       console.log('No Base64 enconding available.');
     }
@@ -58,7 +58,7 @@ const PictureGalleryScreen: FC = () => {
       ]);
       return;
     }
-    callC2PAManifest();
+    callC2PAManifest(data);
   };
 
   function onRetakeButtonPressed() {
