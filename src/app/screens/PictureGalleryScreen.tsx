@@ -10,17 +10,19 @@ import useC2PAPost from '@/src/hooks/AxiosHooks/useC2PAPost';
 import crIcon from '@/src/assets/images/cr.png';
 import { ImagePickerAsset } from 'expo-image-picker';
 import LoadingComponent from '@/src/app/components/LoadingComponent';
+import InputManifestModal from '@/src/app/components/InputManifestModal';
+import { UserData } from '@/src/types/types';
 
 enum ImageTypes {
   JPG = 'jpg',
   JPEG = 'jpeg',
   PNG = 'png',
 }
-
 const PictureGalleryScreen: FC = () => {
   const { t } = useTranslation();
   const { response, apiError, loading, postData } = useC2PAPost();
   const [selectedImage, setSelectedImage] = useState<ImagePickerAsset | null>(null);
+  const [isInputModalVisible, setInputModalVisible] = useState<boolean>(false);
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -40,13 +42,24 @@ const PictureGalleryScreen: FC = () => {
     }
   };
 
-  function onSignedButtonPressed() {
+  function callC2PAManifest() {
     if (selectedImage?.base64) {
       postData(selectedImage.base64);
     } else {
       console.log('No Base64 enconding available.');
     }
   }
+
+  const handleInputSave = (data: UserData) => {
+    console.log('User Information:', data);
+    if (data.fullName === '' || data.fullName === undefined) {
+      Alert.alert('Invalid Input Data', 'Please at least provide the Full Name.', [
+        { text: 'OK', onPress: () => setInputModalVisible(true), style: 'cancel' },
+      ]);
+      return;
+    }
+    callC2PAManifest();
+  };
 
   function onRetakeButtonPressed() {
     setSelectedImage(null);
@@ -70,7 +83,11 @@ const PictureGalleryScreen: FC = () => {
         <Pressable style={STYLES.PhotoButtons} onPress={onRetakeButtonPressed}>
           <Text style={STYLES.photoText}>{t('retake')}</Text>
         </Pressable>
-        <Pressable style={STYLES.PhotoButtons} onPress={onSignedButtonPressed}>
+        <Pressable
+          style={STYLES.PhotoButtons}
+          onPress={() => {
+            setInputModalVisible(true);
+          }}>
           <Text style={STYLES.photoText}>{t('sign')}</Text>
         </Pressable>
       </View>
@@ -103,6 +120,13 @@ const PictureGalleryScreen: FC = () => {
           {selectedImage ? (
             <>
               <Image source={{ uri: selectedImage.uri }} style={StyleSheet.absoluteFill} />
+              <InputManifestModal
+                visible={isInputModalVisible}
+                onClose={() => {
+                  setInputModalVisible(false);
+                }}
+                onSave={handleInputSave}
+              />
               {response ? (
                 <ResponseViewComponent />
               ) : (

@@ -76,7 +76,7 @@ const CameraScreen: FC = () => {
     setPhoto(undefined);
   }
 
-  async function callC2PAManifest(data: UserData) {
+  async function callC2PAManifest() {
     if (photo?.base64) {
       await MediaLibrary.createAssetAsync(photo.uri);
       postData(photo.base64);
@@ -91,7 +91,7 @@ const CameraScreen: FC = () => {
       ]);
       return;
     }
-    callC2PAManifest(data);
+    callC2PAManifest().then(() => {});
   };
 
   const apiErrorAlert = () =>
